@@ -175,7 +175,7 @@
 				this.inV = 0
 				if (this.id.trim().length === 12 && this.id.trim().indexOf("1") === 0) {
 					this.inV = 1
-
+                    this.unDolist = []
 					//this.id = id
 					this.getPreSupply(this.id)
 				}

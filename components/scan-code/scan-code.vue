@@ -71,7 +71,6 @@
 				main.registerReceiver(receiver, filter);
 			},
 			stopScan() {
-				_sef.setScanTimes(12)
 				main.unregisterReceiver(receiver);
 			},
 			queryCode: function(code) {
