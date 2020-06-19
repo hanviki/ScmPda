@@ -1,2 +1,6 @@
 
-unpackage/.*
+unpackage/*
+unpackage/debug/
+unpackage/dist/
+unpackage/res/
+unpackage/resources/
