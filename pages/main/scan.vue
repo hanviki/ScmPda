@@ -1,36 +1,34 @@
 <template>
-	<view style="width: 96%;">
-		<u-card title="供应计划预收" style="width: 96%;" v-show="inV==1">
+	<view style="width: 98%;">
+		<u-field v-model="id" label="二维码:" @input="scanchange" :field-style="{border: '#00A0FF solid 1rpx'}">
+		</u-field>
+		<u-card title="供应计划预收" style="width: 98%;" v-show="inV==1">
 			<view slot="body" class="">
-
-				<u-field v-model="id" label="供应计划号:">
+				<u-field v-model="scm_b_supply.gysname" :label-width="150" :disabled="true" label="供应商名称:">
 				</u-field>
-				<u-field v-model="scm_b_supply.gysaccount" label="供应商账号:">
+				<u-field v-model="scm_b_supply.txz01" :label-width="150" :disabled="true" label="药品名称:">
 				</u-field>
-				<u-field v-model="scm_b_supply.gysname" label="供应商名称:">
+				<u-field v-model="scm_b_supply.matnr" :label-width="150" :disabled="true" label="药品编码:">
 				</u-field>
-				<u-field v-model="scm_b_supply.txz01" label="药品名称:">
+				<u-field v-model="scm_b_supply.werkst" :label-width="150" :disabled="true" label="院区:">
 				</u-field>
-				<u-field v-model="scm_b_supply.matnr" label="药品编码:">
+				<u-field v-model="scm_b_supply.lgortName" :label-width="150" :disabled="true" label="库房:">
 				</u-field>
-				<u-field v-model="scm_b_supply.werkst" label="院区:">
+				<u-field v-model="scm_b_supply.charge" :label-width="150" :disabled="true" label="批次:">
 				</u-field>
-				<u-field v-model="scm_b_supply.lgortName" label="库房:">
-				</u-field>
-				<u-field v-model="scm_b_supply.charge" label="批次:">
-				</u-field>
-				<u-field v-model="scm_b_supply.vfdat" label="有效期:">
+				<u-field v-model="scm_b_supply.vfdat" :label-width="150" :disabled="true" label="有效期:">
 				</u-field>
 				<!--<u-field v-model="scm_b_supply.fphm" label="发票号码">
 				</u-field>
 				<u-field v-model="scm_b_supply.fpjr" label="发票金额">
 				</u-field>-->
 
-				<u-field v-model="scm_b_supply.gMenge" disabled="true" label="供应数量:">
+				<u-field v-model="scm_b_supply.gMenge" :label-width="150" :disabled="true" label="供应数量:">
 				</u-field>
-				<u-field disabled="true" v-model="scm_b_supply.doneMenge==null?0:scm_b_supply.doneMenge" label="已收数量:">
+				<u-field :disabled="true" :label-width="150" v-model="scm_b_supply.doneMenge==null?0:scm_b_supply.doneMenge" label="已收数量:">
 				</u-field>
-				<u-field v-model="scm_b_supply.undoMenge" label="预收数量:" placeholder="请输入预收数量">
+				<u-field v-model="scm_b_supply.undoMenge" :label-width="150" label="预收数量:" :field-style="{border: '#00A0FF solid 1rpx'}"
+				 placeholder="请输入预收数量">
 				</u-field>
 			</view>
 			<view class="" slot="foot" style="text-align: center;">
@@ -38,7 +36,7 @@
 				<u-button size="medium" type="primary" @click="doReceiveCancel" v-show="status_cancel==1?true:false">取消预收</u-button>
 			</view>
 		</u-card>
-		<u-card title="送货清单" style="width: 96%;"  v-show="inV==2">
+		<u-card title="送货清单" style="width: 98%;" v-show="inV==2">
 			<view class="" slot="body">
 				<template v-for="item in unDolist ">
 					<view>{{ item.id }}
@@ -46,24 +44,24 @@
 					</view>
 					<scroll-view style="height: 500rpx;" :scroll-y="true">
 						<u-collapse>
-							<u-collapse-item :title="item2.id+'|'+item2.txz01" v-for="(item2, index) in item.innerData" :key="index">
-								<u-field v-model="item2.matnr" label="药品编码:">
+							<u-collapse-item :title="item2.id+'|'+item2.txz01" v-for="(item2, index) in item.innerData" :key="item2.id">
+								<u-field v-model="item2.matnr" :label-width="150" :disabled="true" label="药品编码:">
 								</u-field>
-								<u-field v-model="item2.werkst" label="院区:">
+								<u-field v-model="item2.werkst" :label-width="150" :disabled="true" label="院区:">
 								</u-field>
-								<u-field v-model="item2.lgortName" label="库房:">
+								<u-field v-model="item2.lgortName" :label-width="150" :disabled="true" label="库房:">
 								</u-field>
-								<u-field v-model="item2.charge" label="批次:">
+								<u-field v-model="item2.charge" :label-width="150" :disabled="true" label="批次:">
 								</u-field>
-								<u-field v-model="item2.vfdat" label="有效期:">
+								<u-field v-model="item2.vfdat" :label-width="150" :disabled="true" label="有效期:">
 								</u-field>
-								<u-field v-model="item2.fphm" label="发票号码">
+								<u-field v-model="item2.fphm" :label-width="150" :disabled="true" label="发票号码">
 								</u-field>
-								<u-field v-model="item2.fpjr" label="发票金额">
+								<u-field v-model="item2.fpjr" :label-width="150" :disabled="true" label="发票金额">
 								</u-field>
-								<u-field v-model="item2.gMenge" disabled="true" label="供应数量:">
+								<u-field v-model="item2.gMenge" :label-width="150" :disabled="true" label="供应数量:">
 								</u-field>
-								<u-field disabled="true" v-model="item2.doneMenge==null?0:item2.doneMenge" label="已收数量:">
+								<u-field :label-width="150" :disabled="true" v-model="item2.doneMenge==null?0:item2.doneMenge" label="已收数量:">
 								</u-field>
 							</u-collapse-item>
 						</u-collapse>
@@ -92,28 +90,45 @@
 					</template>
 				</u-table>-->
 			</view>
-			<view class="" slot="foot">
+			<view class="" slot="foot" style="text-align: center;">
 				<u-row gutter="16">
-					<u-col span="5">
-						<u-button size="medium" type="primary" @click="inStock">入库</u-button>
-					</u-col>
-					<u-col span="5" offset="2">
-						<u-button size="medium" type="primary" @click="outStock">退库</u-button>
-					</u-col>
+					<u-button size="medium" type="primary" v-show="isShowStock==0?true:false" @click="inStock">入库</u-button>
+					<u-button size="medium" type="primary" v-show="isShowStock==1?true:false" @click="outStock">退库</u-button>
 				</u-row>
 			</view>
 		</u-card>
-		<scan-code v-show="false" @scancodedate="scanchange"></scan-code>
+	<!-- 	<scan-code ref="sc" @scancodedate="inputChange"></scan-code> -->
 	</view>
 </template>
 
 <script>
-	import orderSacn from '../../pages/main/orderScan'
+	// import orderSacn from '../../pages/main/orderScan'
 	import scanCode from '../../components/scan-code/scan-code'
+     var _codeQueryTag = false
 	var _sef = this
 	export default {
 		components: {
-			orderSacn
+			//orderSacn
+		},
+		created() {
+			this.$scan.intent_main().registerReceiver(this.$scan.intent_receiver(), this.$scan.intent_filter());
+			//main.registerReceiver(receiver, filter);
+		},
+		onUnload() {
+			this.$scan.intent_main().unregisterReceiver(this.$scan.intent_receiver());
+		},
+		onShow: function() {
+			var _this = this
+			uni.$off('scancodedate') // 每次进来先 移除全局自定义事件监听器  
+			uni.$on('scancodedate', function(data) {
+				if (_codeQueryTag) return false;
+				_codeQueryTag = true;
+				setTimeout(function() {
+					_codeQueryTag = false;
+				}, 150);
+				_this.id = data
+				_this.scanchange()
+			})
 		},
 		data() {
 			return {
@@ -126,6 +141,7 @@
 				status_cancel: 0, //取消预收 0 不显示 1显示
 				isDone: 0, //是否可以收获
 				info: '',
+				isShowStock: 0, //是否可以清货清单入库
 				scm_b_supply: {
 					status: 1,
 					txz01: '',
@@ -149,28 +165,25 @@
 				}
 			}
 		},
-		/**onShow: function() {
-			var _this = this
-			uni.$off('scancodedate') // 每次进来先 移除全局自定义事件监听器  
-			uni.$on('scancodedate', function(data) {
-				_this.id = data.code
-				this.scanchange(data.code)
-			})
-		},*/
+		
 		methods: {
-			scanchange(id) {
+			inputChange(id) {
+				this.id = id
+				this.scanchange()
+			},
+			scanchange() {
 				this.inV = 0
-				if (id.trim().length === 12 && id.trim().indexOf("1") === 0) {
+				if (this.id.trim().length === 12 && this.id.trim().indexOf("1") === 0) {
 					this.inV = 1
-					console.info(id)
-					this.id = id
-					this.getPreSupply(id)
+
+					//this.id = id
+					this.getPreSupply(this.id)
 				}
-				if (id.trim().length === 12 && id.trim().indexOf("2") === 0) {
+				if (this.id.trim().length === 12 && this.id.trim().indexOf("2") === 0) {
 					this.inV = 2
-					console.info(id)
-					this.id = id
-					this.getPlanList(id)
+
+					//this.id = id
+					this.getPlanList(this.id)
 				}
 			},
 			getPreSupply(id) {
@@ -221,7 +234,7 @@
 					url: 'scmBSupplyplan/cancel', //待
 					method: 'put'
 				}, {
-					id: id
+					id: this.id
 				}).then((r) => {
 					console.info(r)
 					let data = r[1].data
@@ -288,6 +301,12 @@
 					let data = r[1].data
 					for (let item of data.rows) {
 						this.unDolist.push(item);
+						if (item.innerData[0].status == "0") {
+							this.isShowStock = 0
+						} else {
+							this.isShowStock = 1
+						}
+
 					}
 
 				}).catch((e) => {
@@ -314,6 +333,7 @@
 							icon: 'none',
 							title: '入库成功！'
 						})
+						this.isShowStock = 1
 					} else {
 						uni.showToast({
 							icon: 'none',
@@ -337,8 +357,9 @@
 					if (data == '') {
 						uni.showToast({
 							icon: 'none',
-							title: '出库成功！'
+							title: '退库成功！'
 						})
+						this.isShowStock = 0
 					} else {
 						uni.showToast({
 							icon: 'none',
@@ -356,5 +377,7 @@
 </script>
 
 <style>
-
+	field-style {
+		border: #00A0FF solid 1rpx;
+	}
 </style>

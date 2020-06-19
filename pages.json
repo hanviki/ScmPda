@@ -4,14 +4,14 @@
 	},
 	"pages": [ //pages数组中第一项表示应用启动页,
 		{
-			"path": "pages/main/main",
-			"style": {
-				
-			}
-		}, {
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "登录"
+			}
+		},{
+			"path": "pages/main/main",
+			"style": {
+				
 			}
 		}, {
 			"path": "pages/reg/reg",
@@ -59,7 +59,9 @@
         }
         ,{
             "path" : "pages/main/scan",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "扫码"
+			}
         }
         ,{
             "path" : "pages/main/orderScan",
@@ -74,7 +76,7 @@
 		"color": "#7a7e83",
 		"selectedColor": "#0faeff",
 		"backgroundColor": "#ffffff",
-		"list": [{
+		"list": [/* {
 			"pagePath": "pages/main/main",
 			"text": "预收",
 			"iconPath": "static/img/home.png",
@@ -84,7 +86,8 @@
 			"text": "入库",
 			"iconPath": "static/img/home.png",
 			"selectedIconPath": "static/img/homeHL.png"
-		}, {
+		}, */
+		{
 			"pagePath": "pages/main/scan",
 			"text": "扫码",
 			"iconPath": "static/img/prescan.jpg",

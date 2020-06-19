@@ -16,7 +16,7 @@
 			</view>
 			<view class="input-row border">
 				<u-cell-group>
-					<u-field v-model="queryParams.gysaccount" label="供应商" placeholder="请输入供应商名称/账号">
+					<u-field v-model="queryParams.keyword_gys" label="供应商" placeholder="请输入供应商名称/账号">
 					</u-field>
 				</u-cell-group>
 			</view>

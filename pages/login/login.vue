@@ -1,5 +1,5 @@
 <template>
-	<view class="content">
+	<view  class="u-font-lg content">
 		<view class="input-group">
 			<view class="input-row border">
 			<u-field v-model="account" focus="true" label="账号：" placeholder="请输入账号">
@@ -26,6 +26,10 @@
 	export default {
 		components: {
 		},
+		onShow() {
+			uni.$off('scancodedate')
+			this.$scan.intent_main().unregisterReceiver(this.$scan.intent_receiver())
+		},
 		data() {
 			return {
 				providerList: [],
@@ -38,7 +42,7 @@
 		},
 		computed: mapState(['forcedLogin']),
 		methods: {
-			...mapMutations(['login','setToken']),
+			...mapMutations(['login','setToken','setExpireTime']),
 			initProvider() {
 				const filters = ['weixin', 'qq', 'sinaweibo'];
 				uni.getProvider({
@@ -115,11 +119,13 @@
 						service.addToken(data.token)
 						this.toMain(data.account)
 						this.setToken(data.token)
+						console.info("bb"+data.exipreTime)
+						this.setExpireTime(data.exipreTime)
 					}).catch((e) => {
 						console.log(e)
 						uni.showToast({
 							icon: 'none',
-							title: '用户账号或密码不正确'
+							title: '网络不通，请链接内网'
 						});
 					});
 					
@@ -171,7 +177,7 @@
 				 */
 				if (this.forcedLogin) {
 					uni.reLaunch({
-						url: '../main/main',
+						url: '../main/scan',
 					});
 				} else {
 					uni.navigateBack();

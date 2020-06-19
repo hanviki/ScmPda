@@ -11,7 +11,9 @@ const store = new Vuex.Store({
 		forcedLogin: true,
 		hasLogin: false,
 		userName: "",
-		token:""
+		token:"",
+		expireTime: "",
+		scanTimes: 0 //大于1时 不另行增加scan
 	},
 	mutations: {
 		login(state, userName) {
@@ -20,6 +22,12 @@ const store = new Vuex.Store({
 		},
 		setToken(state,token) {
 			state.token = token
+		},
+		setScanTimes(state,times) {
+			state.scanTimes=times
+		},
+		setExpireTime(state,expireTime) {
+			state.expireTime = expireTime
 		},
 		logout(state) {
 			state.userName = "";

@@ -1,7 +1,7 @@
 {
     "name" : "ScmApp",
     "appid" : "__UNI__66B4416",
-    "description" : "登录模板",
+    "description" : "SCM扫码",
     "versionName" : "1.0.0",
     "versionCode" : "100",
     "transformPx" : false,

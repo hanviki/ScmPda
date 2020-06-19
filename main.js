@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 import request from './utils/request.js'
+import scanActivity from './utils/scanActivity.js'
 
 Vue.config.productionTip = false
 
@@ -8,6 +9,8 @@ App.mpType = 'app'
 
 // 此处为演示Vue.prototype使用，非uView的功能部分
 Vue.prototype.$request=request
+
+Vue.prototype.$scan = scanActivity
 
 // 引入全局uView
 import uView from 'uview-ui'

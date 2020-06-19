@@ -1,4 +1,21 @@
 import store from '../store'
+
+function formatDate(value) {
+	var date = new Date(); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+	var Y = date.getFullYear().toString();
+	var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1).toString();
+	var D = date.getDate().toString();
+	var h = date.getHours().toString();
+	var m = date.getMinutes().toString();
+	var s = (date.getSeconds() - 10).toString();
+	let now = Y + M + D + h + m + s;
+	if (now > value.toString()) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 // 定义基础请求路径(后端服务器地址)
 const baseRequest = (opts, data) => {
 	const baseUrl = 'http://192.168.65.125:1022/'; //此为测试地址,并非真实地址
@@ -62,7 +79,9 @@ const baseRequest = (opts, data) => {
 //带Token请求
 const TokenRequest = (opts, data) => {
 	const baseUrl = 'http://192.168.65.125:1022/'; //此为测试地址,并非真实地址
-	
+
+
+
 	//此token是登录成功后后台返回保存在storage中的
 	let DefaultOpts = {
 		url: baseUrl + opts.url,
@@ -81,34 +100,56 @@ const TokenRequest = (opts, data) => {
 		dataType: 'json',
 	}
 	let promise = new Promise(function(resolve, reject) {
-		uni.request(DefaultOpts).then(
-			(res) => {
-				switch (res.status) {
-					case 404:
-						uni.showToast({
-							icon: 'none',
-							title: '很抱歉，资源未找到',
-							duration: 2000
-						})
-						break
-					case 403:
-					case 401:
-						uni.showToast({
-							title: '很抱歉，您无法访问该资源，可能是因为没有相应权限或者登录已失效',
-							duration: 2000
-						})
-						break
-					default:
-						resolve(res)
-						break
+		// 让token早10秒种过期，提升体验
+		if (store.state.expireTime == '' || formatDate(store.state.expireTime)) {
+			console.info("cc" + store.state.expireTime)
+			uni.showModal({
+				title: '登录过期',
+				content: '您登录过期，需要重新登录后才能继续',
+				/**
+				 * 如果需要强制登录，不显示取消按钮
+				 */
+				showCancel: false,
+				success: (res) => {
+					if (res.confirm) {
+						uni.navigateTo({
+							url: '../login/login'
+						});
+					}
 				}
-			}
-		).catch(
-			(response) => {
-				console.info(response)
-				reject(response)
-			}
-		)
+			});
+			reject(response)
+		} else {
+			uni.request(DefaultOpts).then(
+				(res) => {
+					switch (res.status) {
+						case 404:
+							uni.showToast({
+								icon: 'none',
+								title: '很抱歉，资源未找到',
+								duration: 2000
+							})
+							break
+						case 403:
+						case 401:
+							uni.showToast({
+								title: '很抱歉，您无法访问该资源，可能是因为没有相应权限或者登录已失效',
+								duration: 2000
+							})
+							break
+						default:
+							resolve(res)
+							break
+					}
+				}
+
+			).catch(
+				(response) => {
+					console.info(response)
+					reject(response)
+				}
+			)
+		}
 	})
 	return promise
 }

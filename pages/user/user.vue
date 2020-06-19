@@ -20,6 +20,7 @@
 		methods: {
 			...mapMutations(['logout']),
 			bindLogin() {
+				uni.$off('scancodedate')
 				uni.navigateTo({
 					url: '../login/login',
 				});

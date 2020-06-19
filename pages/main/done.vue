@@ -17,7 +17,7 @@
 			</view>
 			<view class="input-row border">
 				<u-cell-group>
-					<u-field v-model="queryParams.matnr" label="药品" placeholder="请输入药品名称/编码">
+					<u-field v-model="queryParams.keyword_mater" label="药品" placeholder="请输入药品名称/编码">
 					</u-field>
 				</u-cell-group>
 			</view>
