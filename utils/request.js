@@ -4,10 +4,10 @@ function formatDate(value) {
 	var date = new Date(); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
 	var Y = date.getFullYear().toString();
 	var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1).toString();
-	var D = date.getDate().toString();
-	var h = date.getHours().toString();
-	var m = date.getMinutes().toString();
-	var s = (date.getSeconds() - 10).toString();
+	var D = date.getDate() <10 ? ('0' + date.getDate().toString()) : date.getDate().toString(); 
+	var h = date.getHours() < 10 ? ('0' + date.getHours().toString()) : date.getHours().toString();
+	var m = date.getMinutes() < 10 ? ('0' + date.getMinutes().toString()) : date.getMinutes().toString();
+	var s = date.getSeconds() < 10 ? ('0' + date.getSeconds().toString()) : date.getSeconds().toString();
 	let now = Y + M + D + h + m + s;
 	if (now > value.toString()) {
 		return true;
@@ -18,7 +18,7 @@ function formatDate(value) {
 
 // 定义基础请求路径(后端服务器地址)
 const baseRequest = (opts, data) => {
-	const baseUrl = 'http://192.168.65.125:1022/'; //此为测试地址,并非真实地址
+	const baseUrl = 'http://192.168.65.125:1044/'; //此为测试地址,并非真实地址
 	let baseDefaultOpts = {
 		url: baseUrl + opts.url,
 		// 请求接口地址
@@ -78,7 +78,7 @@ const baseRequest = (opts, data) => {
 };
 //带Token请求
 const TokenRequest = (opts, data) => {
-	const baseUrl = 'http://192.168.65.125:1022/'; //此为测试地址,并非真实地址
+	const baseUrl = 'http://192.168.65.125:1044/'; //此为测试地址,并非真实地址
 
 
 
@@ -100,9 +100,10 @@ const TokenRequest = (opts, data) => {
 		dataType: 'json',
 	}
 	let promise = new Promise(function(resolve, reject) {
+		console.info("cc" + store.state.expireTime)
 		// 让token早10秒种过期，提升体验
 		if (store.state.expireTime == '' || formatDate(store.state.expireTime)) {
-			console.info("cc" + store.state.expireTime)
+			
 			uni.showModal({
 				title: '登录过期',
 				content: '您登录过期，需要重新登录后才能继续',
@@ -118,7 +119,7 @@ const TokenRequest = (opts, data) => {
 					}
 				}
 			});
-			reject(response)
+			//reject(response)
 		} else {
 			uni.request(DefaultOpts).then(
 				(res) => {

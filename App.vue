@@ -16,7 +16,7 @@
 	@import "uview-ui/index.scss";
 	/*每个页面公共css */
 	/* H5的时候，隐藏滚动条 */
-	/* #ifdef H5 */
+
 		::-webkit-scrollbar {
 		    display: none;  
 		    width: 0 !important;  
@@ -24,7 +24,7 @@
 		    -webkit-appearance: none;  
 		    background: transparent;  
 		}
-	/* #endif */
+
 
 	uni-page-head
 	{

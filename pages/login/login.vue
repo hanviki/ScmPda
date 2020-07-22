@@ -42,7 +42,7 @@
 		},
 		computed: mapState(['forcedLogin']),
 		methods: {
-			...mapMutations(['login','setToken','setExpireTime']),
+			...mapMutations(['login','setToken','setExpireTime','setUserInfo']),
 			initProvider() {
 				const filters = ['weixin', 'qq', 'sinaweibo'];
 				uni.getProvider({
@@ -121,6 +121,12 @@
 						this.setToken(data.token)
 						console.info("bb"+data.exipreTime)
 						this.setExpireTime(data.exipreTime)
+						this.setUserInfo({
+							realName: data.user.realname,
+							role: data.roles[0],
+							deptName: data.user.deptName,
+							username: data.user.username
+						})
 					}).catch((e) => {
 						console.log(e)
 						uni.showToast({

@@ -13,7 +13,8 @@ const store = new Vuex.Store({
 		userName: "",
 		token:"",
 		expireTime: "",
-		scanTimes: 0 //大于1时 不另行增加scan
+		scanTimes: 0, //大于1时 不另行增加scan
+		userInfo: {}
 	},
 	mutations: {
 		login(state, userName) {
@@ -25,6 +26,9 @@ const store = new Vuex.Store({
 		},
 		setScanTimes(state,times) {
 			state.scanTimes=times
+		},
+		setUserInfo(state,info) {
+			state.userInfo=info
 		},
 		setExpireTime(state,expireTime) {
 			state.expireTime = expireTime
