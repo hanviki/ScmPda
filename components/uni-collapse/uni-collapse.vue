@@ -33,6 +33,12 @@
 					}
 				})
 				this.$emit('change', activeItem)
+			},
+			destoryChildren() {
+				let index = this.childrens.indexOf(this)
+				if (index >= 0) {
+				     this.childrens.splice(index, 1);
+				 }
 			}
 		}
 	}

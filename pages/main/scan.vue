@@ -41,7 +41,8 @@
 			</u-field>
 			<view style="text-align: center;">
 				<u-button size="medium" type="primary" @click="doReceive" :loading="loading" v-show="status==0?true:false">预收</u-button>
-				<u-button size="medium" style="margin-left: 10rpx;" :loading="loading" type="primary" @click="doReceiveCancel" v-show="status_cancel==1?true:false">取消预收</u-button>
+				<u-button size="medium" style="margin-left: 10rpx;" :loading="loading" type="primary" @click="doReceiveCancel"
+				 v-show="status_cancel==1?true:false">取消预收</u-button>
 			</view>
 		</view>
 
@@ -50,8 +51,9 @@
 				<u-line color="red" direction="col" hair-line="1px" length="30rpx" />{{unDolist.gysname}}
 			</view>
 			<scroll-view style="height: 700rpx;" :scroll-y="true">
-				<uni-collapse>
-					<uni-collapse-item :title="item2.id+'|'+item2.txz01" v-for="(item2, index) in unDolist.innerData">
+				<uni-collapse ref="hol">
+					<template v-for="(item2, index) in unDolist.innerData">
+					<uni-collapse-item :title="item2.id+'|'+item2.txz01" >
 						<u-field v-model="item2.matnr" :label-width="150" :disabled="true" label="药品编码:">
 						</u-field>
 						<u-field v-model="item2.werkst" :label-width="150" :disabled="true" label="院区:">
@@ -71,6 +73,7 @@
 						<u-field :label-width="150" :disabled="true" v-model="item2.doneMenge==null?0:item2.doneMenge" label="预收数量:">
 						</u-field>
 					</uni-collapse-item>
+					</template>
 				</uni-collapse>
 			</scroll-view>
 			<view class="" style="text-align: center;">
@@ -114,7 +117,7 @@
 				setTimeout(function() {
 					_codeQueryTag = false;
 				}, 150);
-				
+
 				_this.newId = data
 				_this.scanHandle()
 			})
@@ -178,14 +181,14 @@
 			},
 			isIconName: function() {
 				let iName = false //对号
-				if (this.scm_b_supply.vfdat!='' && this.scm_b_supply.vfdat != null) {
+				if (this.scm_b_supply.vfdat != '' && this.scm_b_supply.vfdat != null) {
 					iName = this.formatDate(this.scm_b_supply.vfdat)
 				}
 				return iName;
 			},
 			vfdat: function() {
 				let vf = "" //对号
-				if (this.scm_b_supply.vfdat!='' && this.scm_b_supply.vfdat != null) {
+				if (this.scm_b_supply.vfdat != '' && this.scm_b_supply.vfdat != null) {
 					vf = this.formatDate2(this.scm_b_supply.vfdat)
 				}
 				return vf;
@@ -222,6 +225,9 @@
 				if (this.id.trim().length === 12 && this.id.trim().indexOf("1") === 0) {
 					//this.id = this.newId
 					this.inV = 1
+
+                    this.$refs.hol.destoryChildren()
+					//this.removeUndoList()
 					this.unDolist.innerData = []
 					this.unDolist = {}
 					//this.id = id
@@ -229,12 +235,17 @@
 				}
 				if (this.id.trim().length === 12 && this.id.trim().indexOf("2") === 0) {
 					//this.id = this.newId
-					this.inV = 2
+					this.inV = 0
+					this.$refs.hol.destoryChildren()
+					
 					this.unDolist.innerData = []
 					this.unDolist = {}
 					//this.id = id
 					this.IsNew = false
-					this.getPlanList(this.id)
+					let that= this
+					setTimeout(function(){ //解决pda扫描送货清单 不能清空下拉
+						that.getPlanList(that.id)
+					},200)
 				}
 			},
 			getPreSupply(id) {
@@ -323,7 +334,7 @@
 				});
 			},
 			reset() {
-				let scm_b_supply_none= {
+				let scm_b_supply_none = {
 					status: 1,
 					txz01: '',
 					matnr: '',
@@ -345,10 +356,11 @@
 					undoMenge: 0 //未收数量
 				}
 				this.scm_b_supply = scm_b_supply_none
-				this.inV = 0 
+				this.inV = 0
 			},
+			
 			setDone(id, menge, donemenge) { //预收
-			this.loading = true
+				this.loading = true
 				this.$request.TokenRequest({
 					url: 'scmBSupplyplan/done', //待
 					method: 'put'
@@ -377,9 +389,9 @@
 						// 	this.status = 1
 						// }
 						this.HasDone = 0
-						
+
 						//this.scm_b_supply = {}
-						
+
 					} else {
 						uni.showToast({
 							icon: 'none',
@@ -417,8 +429,9 @@
 							}
 
 						}
+						this.inV = 2
 					}
-
+                    
 				}).catch((e) => {
 					console.log(e)
 					uni.showToast({
