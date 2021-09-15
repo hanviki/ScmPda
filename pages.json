@@ -67,7 +67,17 @@
 			"path": "components/scan-code/scan-code",
 			"style": {}
 		}
-	],
+        ,{
+            "path" : "pages/main/scanApp",
+            "style": {
+            	//"navigationBarTitleText": "扫码"
+            	"navigationStyle": "custom",
+            	"app-plus": {
+            		"titleNView": false
+            	}
+            }
+        }
+    ],
 	"tabBar": {
 		"color": "#7a7e83",
 		"selectedColor": "#0faeff",

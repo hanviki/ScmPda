@@ -18,7 +18,7 @@ function formatDate(value) {
 
 // 定义基础请求路径(后端服务器地址)
 const baseRequest = (opts, data) => {
-	const baseUrl = 'http://192.168.65.125:1022/'; //此为测试地址,并非真实地址
+	const baseUrl = 'http://192.168.65.125:1044/'; //此为测试地址,并非真实地址
 	let baseDefaultOpts = {
 		url: baseUrl + opts.url,
 		// 请求接口地址
@@ -78,7 +78,7 @@ const baseRequest = (opts, data) => {
 };
 //带Token请求
 const TokenRequest = (opts, data) => {
-	const baseUrl = 'http://192.168.65.125:1022/'; //此为测试地址,并非真实地址
+	const baseUrl = 'http://192.168.65.125:1044/'; //此为测试地址,并非真实地址
 
 
 

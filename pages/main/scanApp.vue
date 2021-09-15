@@ -2,12 +2,15 @@
 	<view style="width: 98%; font-size: medium;margin-top: 15px;">
 		<view>
 			<u-row gutter="16">
-				<u-col span="10">
+				<u-col span="8">
 					<u-field v-model="id2" label="二维码:" @input="inputChange" :field-style="{border: '#00A0FF solid 1rpx'}">
 					</u-field>
 				</u-col>
 				<u-col span="2">
 					<icon type="warn" v-if="isIconDone" />
+				</u-col>
+				<u-col span="2">
+					<image style="width: 40px; height: 40px;" src="../../static/img/prescan.jpg" @click="tel()" ></image>
 				</u-col>
 			</u-row>
 		</view>
@@ -92,10 +95,10 @@
 				</u-row>
 			</view>
 		</view>
-		<u-modal v-model="showModal" title="供应计划号变更" confirm-color="#606266" cancel-color="#2979ff" :content="modalContent" @confirm="confirm" ref="uModal"
-		 :show-cancel-button="true"></u-modal>
-		<u-modal v-model="showModal2" title="箱条码重复扫描"  confirm-color="#606266" cancel-color="#2979ff" :content="modalContent2" @confirm="confirm2" ref="uModal2"
-		 :show-cancel-button="true"></u-modal>
+		<u-modal v-model="showModal" title="供应计划号变更" confirm-color="#606266" cancel-color="#2979ff" :content="modalContent"
+		 @confirm="confirm" ref="uModal" :show-cancel-button="true"></u-modal>
+		<u-modal v-model="showModal2" title="箱条码重复扫描" confirm-color="#606266" cancel-color="#2979ff" :content="modalContent2"
+		 @confirm="confirm2" ref="uModal2" :show-cancel-button="true"></u-modal>
 		<u-no-network></u-no-network>
 		<!-- 	<scan-code ref="sc" @scancodedate="inputChange"></scan-code> -->
 	</view>
@@ -113,28 +116,13 @@
 			//orderSacn
 		},
 		created() {
-			this.$scan.intent_main().registerReceiver(this.$scan.intent_receiver(), this.$scan.intent_filter());
+			//this.$scan.intent_main().registerReceiver(this.$scan.intent_receiver(), this.$scan.intent_filter());
 			//main.registerReceiver(receiver, filter);
 		},
 		onUnload() {
-			this.$scan.intent_main().unregisterReceiver(this.$scan.intent_receiver());
+			//this.$scan.intent_main().unregisterReceiver(this.$scan.intent_receiver());
 		},
-		onShow: function() {
-			var _this = this
-			uni.$off('scancodedate') // 每次进来先 移除全局自定义事件监听器  
-			uni.$on('scancodedate', function(data) {
-				if (_codeQueryTag) return false;
-				_codeQueryTag = true;
-				setTimeout(function() {
-					_codeQueryTag = false;
-				}, 150);
-
-				_this.newId = data
-				if (!_this.showModal && !_this.showModal2) {
-					_this.scanHandle()
-				}
-			})
-		},
+		
 		data() {
 			return {
 				unDolist: {},
@@ -148,7 +136,7 @@
 				status: 0, //是否可以预收
 				status_cancel: 0, //取消预收 0 不显示 1显示
 				isDone: 0, //是否可以收获
-				isIconDone: false,//是否显示
+				isIconDone: false, //是否显示
 				info: '',
 				isShowStock: 0, //是否可以清货清单入库
 				IsNew: true,
@@ -230,7 +218,7 @@
 				}
 				return iName;
 			},
-			
+
 			vfdat: function() {
 				let vf = "" //对号
 				if (this.scm_b_supply.vfdat != '' && this.scm_b_supply.vfdat != null) {
@@ -240,9 +228,20 @@
 			}
 		},
 		methods: {
+			tel() {
+			   let	_this = this
+				uni.scanCode({
+					success: function(res) {
+						_this.newId = res.result
+						if (!_this.showModal && !_this.showModal2) {
+							_this.scanHandle()
+						}
+					}
+				})
+			},
 			inputChange(id) {
 				this.newId = id
-				if (id !='' && !this.showModal && !this.showModal2) {
+				if (id != '' && !this.showModal && !this.showModal2) {
 					this.scanHandle()
 				}
 			},
@@ -318,12 +317,12 @@
 
 				this.status_cancel = this.scm_b_supply.subState //是否预收
 				this.status = this.scm_b_supply.subState
-				if(this.scm_b_supply.subState==1){
-					 this.isIconDone = true
+				if (this.scm_b_supply.subState == 1) {
+					this.isIconDone = true
 				}
-               
+
 				if (this.scm_b_supply.status == 1) { //已经入库的 不显示
-				    this.isIconDone = true
+					this.isIconDone = true
 					this.status = 1
 					this.status_cancel = 0
 				}
@@ -389,7 +388,7 @@
 								that.scm_b_supply.undoMenge = parseFloat(that.HasDone) //获取每条数据的结果
 							} else {
 								if (that.scm_b_supply.subState == 1 || that.scm_b_supply.status == 1) {
-									
+
 									that.scm_b_supply.undoMenge = parseFloat(that.scm_b_supply.subMenge)
 								} else {
 									if (that.scm_b_supply.subMenge > 0) {
@@ -409,7 +408,7 @@
 								that.HasDone = 0
 							}
 							if (that.scm_b_supply.status == 1) { //已经入库的 不显示
-							    this.isIconDone = true
+								this.isIconDone = true
 								that.status = 1
 								that.status_cancel = 0
 							}
